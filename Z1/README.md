@@ -14,6 +14,7 @@
 - API -> RESTful api 
 
 ## 1. Password Hashing
+
 - We choose spring-security as reliable provider and their org.springframework.security.crypto.password.PasswordEncoder; implementation.
 - Based on their documentation creating our custom encoder is not recommended and they recommend using one of their known strong implementations.
 - Password encoder is a Interface and possible implemnations include: AbstractPasswordEncoder, BCryptPasswordEncoder, NoOpPasswordEncoder, Pbkdf2PasswordEncoder, SCryptPasswordEncoder, StandardPasswordEncoder.
@@ -22,6 +23,116 @@
 - So secure password needs to be hased with a sault different for each user.
 
 ## 2. Auditing Mechanism
+
+Requirements:
+1. Log files need to provide debug information to support issue resolution;
+2. All events requiring non-repudiation need to be logged, enough information needs to be supplied to prove
+non-repudiation, and these events should be easily extracted;
+3. Log entries should not store sensitive data;
+4. The log mechanism needs to be reliable, ensuring the availability of the mechanism and integrity of the
+log files;
+5. Log entries across the system need to accurately state the creation time;
+6. The log mechanism should strive to minimize cluttering the log files.
+
+Implementation:
+1. 
+   1. Stack trace need to be included in log records.
+   2. Values and context too.
+   3. For complicated operation GID (Global ID aka correlation ID) is created and logged with every log record.
+   4. Better to use structured logging approach: store logs entries as JSONs.
+   5. On the opposite side, logs output to the IO stream should be in the human-readable format and not contain odd information.
+2. 
+   1. All important events, especially data access and modification, are logged. For simplicity, [AOP](https://www.baeldung.com/spring-aop-annotation) to log every method call can be used.
+   2. If system provides the REST API, every request is logged.
+   3. Logging enabled in all data storages, correlation id (GID) is passed to the storage.
+   4. Logging is enabled in all virtual machines, containers and cloud services.
+3. 
+   1. Sensitive data is not logged intentionally, instead, hash is preferred.
+   2. Log records are checked before logging and sensitive data is replaced with hash-code. E.g. using [Presidio](https://microsoft.github.io/presidio/)
+   3. Instead of logging PII, we use user ID and GID.
+   4. Log data is being eventually deleted after a certain period of time.
+4. 
+   1. Log records are stored on the separate server. E.g. [LogStash, ES, Kibana](https://stackoverflow.com/questions/10525725/which-nosql-database-should-i-use-for-logging) or some cloud SaaS solution.
+   2. Logs saved in the local file system too, but only as a backup measure.
+   2. Any running program in the whole system has only write-access to the logs (both cloud and local).
+   3. Replication and backup of the log server is enabled.
+   4. Programmers have restricted access to the logs.
+5. 
+   1. Log records are created with the timestamp. Timestamp is in UTC. Timestamp format is fized, e.g. is in the ISO 8601 format.
+   2. When logs are stored in the cloud, the cloud provider's time is stored, e.g. [received time](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry)
+   3. Even though, the system is distributed and the order of event is not guaranteed, for operations that are dependent on the order of events [LogSplit](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#LogSplit) approach can be used. (So that instead of writing many entries for one opration, one entry is logged on the different machines).
+6. 
+   1. Log records are stored in the structured format, so that they can be easily parsed and filtered.
+   2. Log records are stored in the cloud, so that they can be easily accessed and analyzed.
+   3. Old log records are deleted after a certain period of time.
+   4. For local logs record filters by severity and other optimizations can be used.
+
+Example of the whole algorithm:
+```mermaid
+  graph TD;
+      R[Client]-->|Some HTTP request|A[HTTP handler]
+      A-->C[Middleware logs handler]
+      A-->M[Some method]
+      A-->D
+      M-->D[AOP logs handler]
+      M-->L[Miscellaneous logs handler]
+      A-->|Another request with 'correlation-id' header|B[Another HTTP handler]
+      B-->E[...]
+      D-->F[Log filter: adds meta, removes PII]
+      L-->F
+      C-->F
+      F-->P[Presidio]
+      P-->F
+      F-->FF[Logs formatter]
+      FF-->|JSON|G[Log storage]
+      DB[...]-->F
+      FF-->|Text|IO[IO stream]
+      FF-->FS[Local file system]
+      
+      classDef orange fill:#f96,stroke:#333;
+      class D,C,L,FF,F,K orange
+```
+Log entry example:
+```json
+{
+  "timestamp": "2021-05-01T12:00:00Z",
+  "receivedTimestamp": "2021-05-01T12:00:05Z",
+  "operation-id": "123e4567-e89b-12d3-a456-426614174000",
+  "user-id": "234e5678-e89b-12d3-a456-426614174000",
+  "message": "User 234e5678-e89b-12d3-a456-426614174000 called /api/login",
+  "severity": "INFO",
+  "stacktrace": "..."
+}
+```
+
+## 3. Additional Security Controls
+
+In this section we are mostly referencing to the "IB-2023" project and "web-security" course project.
+The "IB-2023" project is a private repository and access needs to be requested it's located by this [link](https://github.com/Anja0906/IB-2023).
+The "web-security" course project is public, and it's located by this [link](https://github.com/tamarailic/websecurity).
+
+### Password Hashing in the "IB-2023" Project
+
+Implementation:
+- Auth0 authorizer was used for Auth-N implementation.
+
+Implementation details:
+- Auth0 is using [bcrypt JS library](https://www.npmjs.com/package/bcrypt) for password hashing.
+  At least [it doesn't have declared vulnerabilities](https://security.snyk.io/package/npm/bcryptjs) by now.
+- bcrypt.js is using the bcrypt algorithm to hash passwords with default 10 rounds of hashing.
+  So that's the similar algorithm as the one described in the 1.
+- Additionally, Auth0 is providing rainbow table attack protection based on their collection of hashes and
+  supports password history and expiration.
+
+Comparison:
+- Both ideal and actual implementation are using the same algorithm for password hashing.
+- The difference is only in the provider of the hashing algorithm.
+- <span style="color: red">- using cloud authorization provider means exposing data to the third party service</span>
+- <span style="color: green">+ using cloud authorization provider means that the provider is responsible for the security of the hashing algorithm</span>
+- <span style="color: green">+ Auth0 provides additional features and more computational power to commit more rounds of hashing, then we can afford while deployment our small project on a free tier of cloud services</span>
+- <span style="color: green">+ in case of some vulnerability in the bcrypt algorithm or its implementation, auth0 will fix it faster than we can</span>
+
+### Auditing Mechanism in the "web-security" Project
 
 - Our log files are structured and programatically searchable. Every non GET request was logged with requested action, user id, ip address and timestemp of request. No sesitive content was logged. We log every event with level warning or above in our file on server.
 - To implement logging in our application we created our custom AOP Aspect with annotation @WSLogger, so anyone can just extend our functionallity and implement logging in their application just by putting this annotation above their controller endpoint.
@@ -78,13 +189,3 @@ public class WSLoggerAspect {
 }
 ```
 - Some potential improvement we reasurched is to use structured logging database like seq to make our loggs searchable, more on [this link](https://docs.datalust.co/docs/using-java)
-
-## 3. Additional Security Controls
-
-In this section we are mostly referencing to the "IB-2023" project.
-This project is located by this [link](https://github.com/Anja0906/IB-2023).
-Access needs to be requested.
-
-### Password Hashing in the "IB-2023" Project
-
-
