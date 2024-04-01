@@ -23,4 +23,20 @@
 - user's location
 - company's turn-over
 
+## C. & D. Attack Surface
+
+![Stride](STRIDE.png)
+
+1. Client connection with Web Server (mitm)
+2. Web Server from the side of client (attack on the API)
+3. Web Server via SSH
+4. DB from outside
+5. DB from server side (in case Server is compromised)
+6. Side API services from outside
+7. Infrastructure from Server side (in case Server is compromised)
+
+![Surfaces](Surfaces.png)
+
+## E. Threat and mitigation analysis
+
 
