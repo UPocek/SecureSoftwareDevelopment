@@ -2,11 +2,9 @@
 
 ## A. Attackers & Motivation
 
-- scammers
-- - want to make user pay for their non-existing services
+### Civilians
 
-- criminals 
-- - want to steal user's PII and sell it
+Non-capable and non-motivated to hack the system or users, but wanting to get services for free
 
 - companies 
 - - want to track user's behavior
@@ -16,13 +14,32 @@
 - users
 - - want to get services for free
 
+### Dilettantes
+
+Non-capable to hack system, but capable to trick users
+
+- scammers
+- - want to make user pay for their non-existing services
+- - - by replacing MegaTravel site
+- - - by making false companies
+- - - by hacking user's account
+
+### Hackers
+
+Capable to hack system
+
+- criminals 
+- - want to steal user's PII and sell it
+- - want to steal user's payment information and use it
+
 ## B. Assets
 
-- user's PII
-- user's payment information
-- user's behavior data
-- user's location
-- company's turn-over
+- user's PII (confidentiality)
+- user's payment information (confidentiality)
+- user's behavior data (confidentiality, integrity)
+- user's location (confidentiality)
+- company's turn-over (confidentiality)
+- server usage data (availability)
 
 ## C. & D. Attack Surface
 
