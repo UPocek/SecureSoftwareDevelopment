@@ -57,13 +57,13 @@ Capable to hack system
 
 ## E. Threat and mitigation analysis
 
-| Surface   | Threat           | Attacker               | Mitigation                                                                                                                               |
-|-----------|------------------|------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| 1.        | STI              | scammers               | HTTPS                                                                                                                                    |
-| 2.        | S<br/>D<br/>E    | scammers               | Reliable headers, OAuth etc.<hr/>Fail2ban, Load Balancing etc.<hr/>Correct code                                                          |
-| 3.        | TID              | criminals              | SSH vulnerabilities mitigation, SSH via VPN tunnel only                                                                                  |
-| 4.        | TIDE             | criminals              | SSH vulnerabilities mitigation, SSH in same network only                                                                                 |
-| 5.        | I<hr/>TD<hr/>E   | criminals              | -<hr/>Correct WS access rights (non admin)<hr/>Delegate Auth-Z to authorizer                                                             |
-| 6.        | S<hr/>R          | scammers<hr/>clients   | Aggregator recognize your service by API key, you recognize API by HTTPS certificate<hr/>agree on timely mutual exchange of information  |
-| 7.        | ID               | criminals              | Resource usage monitoring                                                                                                                |
-|           | R                | clients, companies     | Proper logging of all actions                                                                                                            |
+| Surface | Threat         | Attacker             | Mitigation                                                                                                                              |
+|---------|----------------|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| 1.      | STI            | scammers             | HTTPS                                                                                                                                   |
+| 2.      | S<br/>D<br/>E  | scammers             | Reliable headers, OAuth etc.<hr/>Fail2ban, Load Balancing etc.<hr/>Correct code                                                         |
+| 3.      | TID            | criminals            | SSH vulnerabilities mitigation, SSH via VPN tunnel only                                                                                 |
+| 4.      | TIDE           | criminals            | SSH vulnerabilities mitigation, SSH in same network only                                                                                |
+| 5.      | I<hr/>TD<hr/>E | criminals            | -<hr/>Correct WS access rights (non admin)<hr/>Delegate Auth-Z to authorizer                                                            |
+| 6.      | S<hr/>R        | scammers<hr/>clients | Aggregator recognize your service by API key, you recognize API by HTTPS certificate<hr/>agree on timely mutual exchange of information |
+| 7.      | ID             | criminals            | Resource usage monitoring                                                                                                               |
+|         | R              | clients, companies   | Proper logging of all actions                                                                                                           |
