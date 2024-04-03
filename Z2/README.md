@@ -2,6 +2,13 @@
 
 ## A. Attackers & Motivation
 
+### Noob
+
+Non-capable and non-motivated to hack the system, just doing things wrong that can put a system in failure state
+
+- users
+- - think of your grandpa, who often clicks a button too many times or enters invalid values.
+
 ### Civilians
 
 Non-capable and non-motivated to hack the system or users, but wanting to get services for free
@@ -12,7 +19,7 @@ Non-capable and non-motivated to hack the system or users, but wanting to get se
 - - avoid paying taxes / fees
 
 - users
-- - want to get services for free
+- - trying to manipulate the app to get services for free
 
 ### Dilettantes
 
@@ -34,24 +41,26 @@ Capable to hack system
 
 ## B. Assets
 
-- user's PII (confidentiality)
-- user's payment information (confidentiality)
-- user's behavior data (confidentiality, integrity)
-- user's location (confidentiality)
-- company's turn-over (confidentiality)
-- server usage data (availability)
+- user's PII (admin/confidentiality) -> attack will harm MegaTravel brand's image and the trust of their users. It will also require users immediate action to reduce the consequences which will compromise UI/UX. But this will not be detrimental to the company.
+- user's payment information (no one / confidentiality) -> attack will harm MegaTravel brand's image and the trust of their users. Also, MegaTravel may be sued and required to pay a big fine. This can be detrimental to the company.
+- user's behavior data (data team, should be anonymized / confidentiality, integrity) -> Competitors accessing this data will reduce MegaTravel's market advantage. The attack will harm MegaTravel's brand's image and the trust of its users. This can be detrimental to the company's position in the market.
+- user's location (admin/confidentiality) -> attack will harm MegaTravel brand's image and the trust of their users. But this will not be detrimental to the company.
+- company's turnover (admin + management staff/confidentiality) -> competitors accessing this data will reduce MegaTravel's market advantage. This will not be detrimental to the company but can enable competitors to catch up.
+- servers handling users' requests (admin + DevOps / availability) -> Making company servers unavailable to the end-users will cause profit loss for the company and loss in user trust and satisfaction with our platform. 
+- main database of the system (admin + DevOps / availability) -> Making company servers unavailable to the end-users will cause profit loss for the company and loss in user trust and satisfaction with our platform.
 
 ## C. & D. Attack Surface
 
 ![Stride](STRIDE.png)
 
-1. Client connection with Web Server (mitm)
-2. Web Server from the side of client (attack on the API)
+1. Client connection with Web Server (MITM)
+2. Web Server from the side of the client (attack on the API)
 3. Web Server via SSH
 4. DB from outside
-5. DB from server side (in case Server is compromised)
+5. DB from the server side (in case the Server is compromised)
 6. Side API services from outside
-7. Infrastructure from Server side (in case Server is compromised)
+7. Infrastructure from the Server side (in case the Server is compromised)
+8. Physical attack on data center
 
 ![Surfaces](Surfaces.png)
 
