@@ -279,6 +279,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Additional
+**/venv
+
 # Windows shortcuts
 *.lnk
 
