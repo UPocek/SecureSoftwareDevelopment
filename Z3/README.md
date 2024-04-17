@@ -20,6 +20,7 @@
 1. Unauthorized use and access to endpoints and data available only to system admins
 1. Weak password that can be blindly guessed + SQL Injection that will enable even stronger passwords to be guessed
 1. Stronger password requirements in every place where the password can be set or modified front and back + Preventing SQL injection by using the library to perform a required query and not concatenating SQL query manually as strings
+
 ![E1](./images/login_admin.png)
 
 
@@ -33,6 +34,7 @@
 1. Integrity is compromised which can lead to different levels of problems depending on the application type
 1. Improper input validation + access to anyone to register new admin to the system
 1. Validation on both sides front and back and preventing access to this endpoint to non-super admin user
+
 ![E2](./images/admin_registration.png)
 
 ## 3. Error Handling *
@@ -45,6 +47,7 @@
 1. Accessing information about server organization or other user or architecture-sensitive data can make it easier for an attacker to exploit some other parts of our system + This can damage the confidentiality component of our system
 1. Returning the whole error message to the front end and not handling it properly on the backend as a Bad Request
 1. Better error handeling
+
 ![E3](./images/error_handling.png)
 
 ## 4. Password Strength **
@@ -56,6 +59,7 @@
 1. Confidentiality and Integrity are compromised, the severity of the exploit depends on the privileges of the user
 1. Eeak password requirements
 1. Stronger password requirements
+
 ![E4](./images/password_strength.png)
 
 ## 5. Empty User Registration **
@@ -79,6 +83,7 @@
 1. Compromising the availability of the system, depending on GET requests and how users are queried while login and other operations can break the system internally
 1. Not performing adequate checks at the backend
 1. Stronger check on backend for incoming user data
+
 ![E5](./images/empty_user_registration.png)
 
 ## 6. Repetitive Registration *
@@ -89,6 +94,7 @@
 1. The user does not know what password he/she put in
 1. Missing check on the backend side
 1. Additional check for password and repeated password matching
+
 ![E6](./images/repetative_registration.png)
 
 ## 7. Mass Dispel *
@@ -96,6 +102,7 @@
 1. Using Shift + X to close more than one challenge completed banner
 #### Explanation:
 1. Miscellaneous
+
 ![E7](./images/mass_dispel.png)
 
 ## 8. Christmas Special ****
@@ -112,6 +119,7 @@
 1. This can be used to retrieve sensitive data from our database compromising our confidentiality and enabling other types of attacks
 1. Creating SQL query by concatenating strings
 1. Using SQL wrapper library
+
 ![E8](./images/christmas_special.png)
 
 ## 9. User Credentials ****
@@ -126,6 +134,7 @@ This way I can receive hashed passwords associated with the user's ID and I alre
 1. Confidentiality and Integrity are compromised but this is a very big exploit that can destroy our web app
 1. Giving attacker access to hashed passwords (that are also not that strongly hashed, not using best practices) without even him needing to have access to the server
 1. Preventing SQL Injection and use of better hashing practices
+
 ![E9](./images/user_credentials.png)
 
 ## 10 CAPTCHA Bypass ***
@@ -149,6 +158,7 @@ where id should be the current captcha ID and the captcha attribute should be aw
 1. Bad implementation of the CAPTCHA mechanism
 1. Different CAPTCHA implementation
 1. Preventing SQL Injection and use of better hashing practices
+
 ![E10](./images/captcha_bypass.png)
 
 ## 11. Admin Section **
@@ -161,9 +171,10 @@ where id should be the current captcha ID and the captcha attribute should be aw
 1. Can delete other users and make inapropriate actions to customers which can demage website reputation
 1. Week access cnotrol limits
 1. Devide admin panel into separate app that is not available on the interent
+
 ![E11](./images/admin_section.png)
 
-12. Forged Feedback ***
+## 12. Forged Feedback ***
 ### Steps taken:
 1. While conducting exploit 10. I tried to send request with different userId which was sucessfull
 #### Explanation:
@@ -171,4 +182,5 @@ where id should be the current captcha ID and the captcha attribute should be aw
 1. Impersination and making spam content in other customers name
 1. Lack of check on how can perform what opperation
 1. Checking JWT of the user who submited the request to validate is he trying to perform action for themselves or for some other user which should not be allowed
+
 ![E12](./images/forged_feedback.png)
