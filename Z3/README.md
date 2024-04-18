@@ -8,10 +8,10 @@
 
 ## 1. Login Admin **
 ### Steps taken:
-1. Registration sends HTTP request to http://localhost:3000/api/Users/
+1. Registration sends HTTP request to `http://localhost:3000/api/Users/`
 1. When I try to send a GET request via Postman to the same endpoint I get an Unauthorized response, which means that the endpoint exists, but I just don't have access to it.
 1. I registered as a regular user and after a successful login I got a JWT token as a response from the server
-1. Now when I send a GET request to http://localhost:3000/api/Users/ with the provided JWT token I get a response list with all users on the system
+1. Now when I send a GET request to `http://localhost:3000/api/Users/` with the provided JWT token I get a response list with all users on the system
 1. I can see in plain text users' emails and their roles, so I just copy-pasted the admin's email and guessed the password to be admin123
 1. (Alternatively) This can also be done utilising SQL injection and providing admin@juice-sh.op'; as username and any random password
 1. I'm in as an admin user
@@ -26,7 +26,7 @@
 
 ## 2. Admin Registration ***
 ### Steps taken:
-1. Registration sends HTTP request to http://localhost:3000/api/Users/
+1. Registration sends HTTP request to `http://localhost:3000/api/Users/`
 1. I copied the body of the request that succeeded to Postman and added the attribute role: "admin" to it
 1. This created an admin user successfully, which I can access with the username and password I provided for registration
 #### Explanation:
@@ -64,7 +64,7 @@
 
 ## 5. Empty User Registration **
 ### Steps taken:
-1. Utilising endpoint fund in exploit 2. I was able to send a POST request to endpoint http://localhost:3000/api/Users/ with a body that is missing email property and password set to an empty string
+1. Utilising endpoint fund in exploit 2. I was able to send a POST request to endpoint `http://localhost:3000/api/Users/` with a body that is missing email property and password set to an empty string
 ```json
 {
   "password": "",
@@ -88,7 +88,7 @@
 
 ## 6. Repetitive Registration *
 ### Steps taken:
-1. Registering user via Postman and sending a POST request to http://localhost:3000/api/Users/ endpoints while providing different values for password and repeat password field
+1. Registering user via Postman and sending a POST request to `http://localhost:3000/api/Users/` endpoints while providing different values for password and repeat password field
 #### Explanation:
 1. Improper Input Validation -> Attack where a hacker can, just by using software like Postman, go around protections and validations set on the on side of the application, but not both
 1. The user does not know what password he/she put in
