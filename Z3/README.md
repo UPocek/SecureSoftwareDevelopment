@@ -184,3 +184,95 @@ where id should be the current captcha ID and the captcha attribute should be aw
 1. Checking JWT of the user who submited the request to validate is he trying to perform action for themselves or for some other user which should not be allowed
 
 ![E12](./images/forged_feedback.png)
+
+## 13. Easter Egg ****
+
+### Steps taken:
+1. `localhost:3000/ftp` serves static files, and in the root directory we can see the egg itself
+    However, ftp server is configured to allow only `.md` and `.pdf` files
+2. We can falsify the extension of the file to `.pdf` by adding null prefix consisting of a null byte and `.pdf` in the end of the file: `eastere.gg%00.pdf`
+3. To pass a new path as URL we need to url-encode `%` as `%25` so the final URL is `ftp://localhost:3000/ftp/eastere.gg%2500.pdf` 
+
+#### Explanation:
+1. Security Misconfiguration while leaving some files that should not be available to the public
+2. <i>Poison Null Byte attack</i> - file system works with the string only before the null byte,
+   while the PHP validates the whole string.
+3. Can disclosure sensitive information if it is stored in the `/ftp` dir.
+4. Don't leave sensitive files in the public directory.
+5. Avoid poison null byte, e.g. like here `$file = str_replace(chr(0), '', $string);`
+
+![E13](./images/easter_egg.png)
+
+## 14. Deluxe Fraud ***
+
+### Steps taken:
+1. Install the Burp Suite and configure it to intercept the traffic
+2. Log in as user with id 3 (he has empty wallet)
+3. Try to buy a deluxe membership using wallet
+4. For this reason, slightly change HTML to enable button submit
+5. Intercept the request and change the payment method to `""`
+
+#### Explanation:
+1. Due to some bug in validation - purchase is not validated if payment method is unknown.
+2. Leads to a situation where user can buy a product without paying for it.
+3. Tests and keeping code simpler should help. 
+
+![E14](./images/deluxe_fraud.png)
+
+## 15. Unsigned JWT *****
+
+1. Log in for anyone
+2. With EditThisCookie get the `token` cookie
+3. On https://token.dev/ encoded it
+4. Changed the `email` and `alg` to `none`
+5. Encoded to base64url using https://base64.guru/standards/base64url/encode
+6. Replace the `token` cookie with the new one
+
+```
+ew0KICAidHlwIjogIkpXVCIsDQogICJhbGciOiAibm9uZSINCn0.ew0KICAic3RhdHVzIjogInN1Y2Nlc3MiLA0KICAiZGF0YSI6IHsNCiAgICAiaWQiOiAzLA0KICAgICJ1c2VybmFtZSI6ICIiLA0KICAgICJlbWFpbCI6ICJqd3RuM2RAanVpY2Utc2gub3AiLA0KICAgICJwYXNzd29yZCI6ICIwYzM2ZTUxN2UzZmE5NWFhYmYxYmJmZmM2NzQ0YTRlZiIsDQogICAgInJvbGUiOiAiZGVsdXhlIiwNCiAgICAiZGVsdXhlVG9rZW4iOiAiMDVkMGZiZDVjNzRhNmFlY2Y3MzgxOWQ5NTU5ZTg3NjZlODRiNzMxNjcwMjc0ZTU4OGI0ZThkOWZmMTIzN2UwZSIsDQogICAgImxhc3RMb2dpbklwIjogIiIsDQogICAgInByb2ZpbGVJbWFnZSI6ICJhc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHQuc3ZnIiwNCiAgICAidG90cFNlY3JldCI6ICIiLA0KICAgICJpc0FjdGl2ZSI6IHRydWUsDQogICAgImNyZWF0ZWRBdCI6ICIyMDI0LTA0LTE4VDE4OjE3OjI2LjE1MVoiLA0KICAgICJ1cGRhdGVkQXQiOiAiMjAyNC0wNC0xOFQxOTowODo1MC43NjVaIiwNCiAgICAiZGVsZXRlZEF0IjogbnVsbA0KICB9LA0KICAiaWF0IjogMTcxMzQ2NzMzMQ0KfQ
+```
+
+#### Explanation:
+1. JWT is not signed, so it can be easily manipulated.
+2. Just a poor configuration of the Auth-N requirements.
+3. Any kind of fraud can be done.
+4. Just force JWT to be signed.
+
+![E15](./images/unsigned_jwt.png)
+
+## 16. Bjoern's Favorite Pet ***
+
+1. Using SQL injection I learned Bjorn's email `bjoern@owasp.org`
+2. restore password
+3. Pet name question - just googled `Bjorns pet`: https://twitter.com/bkimminich/status/1594985736650035202
+
+#### Explanation:
+1. Special questions are not very reliable mechanism, especially for the public figures as Bjorn.
+2. Better to use it together with another 2FA mechanism.
+3. And to ask some less public information. Maybe some personal question.
+
+![E16](./images/bjorns_pet.png)
+
+## 17. Extra Language *****
+
+`tlh_AA` - Klingon
+1. Tried to brute force the language code, but it was not successful, cause Klingon code is not xx_XX :(
+2. Just googled it.
+
+#### Explanation:
+1. Some WIP files are in the prod - that's bad.
+2. But very this vulnerability is not very dangerous.
+
+![E17](./images/lang.png)
+
+## 18. Login Bender ***
+
+1. Accidentally solved it while searching for Bjorn's email.
+2. Just used `a' OR id=3 --` injection
+3. Only detail is that injection in the password field is not possible, since it is hashed.
+
+#### Explanation:
+1. SQL injection is a very dangerous vulnerability.
+2. Just use prepared statements or ORM.
+
+![E18](./images/login_bender.png)
