@@ -88,7 +88,7 @@
 
 ## 6. Repetitive Registration *
 ### Steps taken:
-1. Registering user via Postman and sending a POST request to `http://localhost:3000/api/Users/` endpoints while providing different values for password and repeat password field
+1. Registering user via Postman and sending a POST request to `http://localhost:3000/api/Users/` endpoint while providing different values for password and repeat password field
 #### Explanation:
 1. Improper Input Validation -> Attack where a hacker can, just by using software like Postman, go around protections and validations set on the on side of the application, but not both
 1. The user does not know what password he/she put in
