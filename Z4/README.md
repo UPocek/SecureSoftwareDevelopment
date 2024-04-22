@@ -1,8 +1,85 @@
 # Z4
 
-## Uros
+## Uros - StudentVentures
 
-## Tamara
+### Project description:
+- Web platform that aims to connect students from different universities and knowledge domains to work together and bring their ideas into reality. 
+- Part of the project that will be reviewed focuses on student registration, verification, and competing on the leaderboard. To register students need to populate basic personal information and verify accounts based on the link that is sent via email. Students compete on the leaderboard by sharing their unique link and inviting other students to join the platform, that way they gain points and increase their chances of winning prizes.
+### Team:
+- Uroš Poček
+- Tamara Ilić
+### Defects Found:
+- To analyze code for this project we performed static code analysis where each person reviewed another person's code
+- In my code, Tamara found a missing check if the user with the provided email already exits, so I added the code provided below
+```python
+ handle = generate_handle(newUser['email'])
+ response = subscribersTable.get_item(Key={'id': handle})
+ if 'Item' in response:
+ return create_response(400, {'error': 'User already exists'})
+```
+- I found an error in her logic where she awarded points to every person higher in the affiliate chain, which will prevent users that are on the second or lower level of the hierarchy from ever having more points than once above them, she fixed the bug removing recursion and this is here final code:
+```python
+def give_points_to_referrer_chain(referrer):
+ if referrer == 'empty':
+ return
+ response = subscribers_table.get_item(Key={'id': referrer})
+ if 'Item' in response:
+ item = response['Item']
+ item['points'] += 10 # type: ignore
+ subscribers_table.put_item(Item=item)
+```
+### Summary of the Recommendation
+- After we completed manual static code analyses we set up SonarQube and performed analyses with it. These were the results:
+![sonarqube](./images/sonar.png)
+- We had 16 issues mostly with regards to naming conventions, formatting, and exception handling. The biggest issues were:
+- - Add replacement fields or use a normal string instead of an f-string. 
+- - Specify an exception class to catch or reraise the exception
+
+### Review Time and Defects Found:
+- Manual review took about 1 hour (we were reviewing each other's code in parallel) and we found 2-3 smaller issues that I didn't mention and one bug in code logic which will be hard to find with any automated tool.
+- Setting up and researching sonar for this project took us about 1.5 hours, but we were able to make it run in Docker and perform code review for any project locally
+
+## Tamara - PerfectConditions-IoT
+
+### Project description:
+- University project for IoT subject. We created a complete end-to-end solution to monitor plant conditions and give owner suggestions. We have C++ code for ESP that talks to sensors to gather different readings we then send those readings through RaspberryPi to our server written in Rust to analyze them and give owner suggestions on how to make better conditions for his/her plant through a mobile app written in Flutter.
+### Team:
+- Tamara Ilić
+- Uroš Poček
+### Defects Found:
+- To analyze code for this project we performed static code analysis where each person reviewed another person's code
+- In Uroš's code I found leaked token and database cnfiguration settings. I fixed this part of the code to use variables from a secret .env file instead
+```rust
+fn get_influxdb_client() -> Client {
+ dotenv().ok();
+ let host = env::var("INFLUXDB_HOST").expect("INFLUXDB_HOST must be set");
+ let org = env::var("INFLUXDB_ORG").expect("INFLUXDB_ORG must be set");
+ let token = env::var("INFLUXDB_TOKEN").expect("INFLUXDB_TOKEN must be set");
+ let client = Client::new(host, org, token);
+ client
+}
+```
+- In my code, he found an error in logic on the mobile app where I forgot to close the web socket connection after navigating from one page to another which led to more resources used than necessary, but I fixed that after a review
+```dart
+@override
+ void dispose() {
+ _channel. sink.close();
+ _controller.dispose();
+ super.dispose();
+ }
+```
+### Summary of the Recommendation
+- After we completed manual static code analyses used SonarQube and performed analyses with it. These were the results:
+![sonarqube](./images/sonar2.png)
+- We had 5 issues mostly about Maintainability
+- one reliability issue
+- - Add "lang" and/or "xml:lang" attributes to this "<html>" element
+- and 5 security hotspots still present
+- - we fixed those based on sonar recommendations
+
+### Review Time and Defects Found:
+- Manual review took about 30 minutes (we were reviewing each other's code in parallel) and we found a few smaller issues that I didn't mention and some bigger bugs that I wrote about
+- As the Sonar was already set I just ran it with this project and got the mentioned results
 
 ## Alex
 
