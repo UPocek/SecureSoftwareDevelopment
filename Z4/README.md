@@ -47,8 +47,9 @@ def give_points_to_referrer_chain(referrer):
 - Tamara Ilić
 - Uroš Poček
 ### Defects Found:
-- To analyze code for this project we performed static code analysis where each person reviewed another person's code
-- In Uroš's code I found leaked token and database cnfiguration settings. I fixed this part of the code to use variables from a secret .env file instead
+- To analyze code for this project, we performed static code analysis where each person reviewed another person's code.
+- In Uroš's code, I found leaked token and database configuration settings. 
+- I fixed this part of the code to use variables from a secret .env file instead
 ```rust
 fn get_influxdb_client() -> Client {
  dotenv().ok();
