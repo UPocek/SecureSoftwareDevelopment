@@ -93,5 +93,133 @@ passwd
 
 </ol>
 
+### OS review
+
+<ol>
+
+<li>
+
+``` 
+root@9509f6362468:/tmp#  lsb_release -a
+
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04 LTS
+Release:        24.04
+Codename:       noble
+```
+
+</li>
+<li>
+
+``` 
+root@9509f6362468:/tmp# uname -a
+
+Linux 9509f6362468 5.15.49-linuxkit-pr #1 SMP Thu May 25 07:17:40 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+</li>
+<li>
+
+```
+root@9509f6362468:/tmp# uptime
+
+ 23:24:54 up  7:08,  0 user,  load average: 0.00, 0.00, 0.00
+```
+
+</li>
+
+</ol>
+
+### Time review
+
+<ol>
+
+<li>
+
+```
+root@9509f6362468:/tmp# cat /etc/timezone 
+Europe/Belgrade
+```
+
+</li>
+
+</ol>
+
+### Package review
+
+1. ```apt list --manual-installed```
+
+Lots of output but nothing interesting (image is new)
+
+### Logging
+
+Discussed in the beginning - Docker cares about it)
+
+### Network review
+
+<ol>
+<li>
+Installed `ufw`. Configure it to allow `5000` and `22`.
+
+```
+root@9509f6362468:/tmp# ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+5000                       ALLOW       Anywhere
+22/tcp                     ALLOW       Anywhere
+5000 (v6)                  ALLOW       Anywhere (v6)
+22/tcp (v6)                ALLOW       Anywhere (v6)
+```
+</li>
+
+<li>
+`ufw` works on reboot:
+
+```
+root@9509f6362468:/tmp# ufw enable
+Firewall is active and enabled on system startup
+```
+</li>
+</ol>
+
+### Files review
+
+<ol>
+<li>
+I know that there is only `/tmp` mounted, so I will not check other million of Docker-mounted services for this work.
+In real world they all should be checked.
+
+```
+root@9509f6362468:/tmp# mount | grep /tmp
+
+grpcfuse on /tmp type fuse.grpcfuse (rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other,max_read=1048576)
+```
+I want to make it `noexec`
+```
+root@9509f6362468:/tmp# mount -o remount,noexec /tmp
+```
+
+```
+root@9509f6362468:/tmp# mount | grep /tmp
+grpcfuse on /tmp type fuse.grpcfuse (rw,nosuid,nodev,noexec,relatime,user_id=0,group_id=0,allow_other,max_read=1048576)
+```
+
+</li>
+<li>
+
+```
+root@9509f6362468:/tmp# ls -al /etc/shadow
+
+-rw-r----- 1 root shadow 712 May 15 22:13 /etc/shadow
+```
+
+Enough secure.
+
+</li>
+</ol>
+
 
 ![Meme](alex/images/cat.jpg)
