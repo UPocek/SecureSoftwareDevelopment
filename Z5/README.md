@@ -278,4 +278,38 @@ Not reliable, so
 </li>
 
 
+### Review sudoers
+
+```shell
+root@9509f6362468:/tmp# grep -Po '^sudo.+:\K.*$' /etc/group
+
+ubuntu
+```
+
+That's pretty bad, I guess. In production, we don't need default user at all, especially with sodo rights.
+
+### Review services
+
+At least services are ok))
+
+```
+root@9509f6362468:/tmp# ps -edf
+
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 05:04 pts/0    00:00:00 /bin/bash
+root      4000     0  0 06:14 pts/1    00:00:00 /bin/sh
+root      5929     1  0 06:47 pts/0    00:00:05 python3 -m flask --app example run --host=0.0.0.0
+root      6691     1  0 16:45 pts/0    00:00:00 ps -edf
+```
+
+### Review openssh
+
+1. It's accessible
+2. Can not log in as root
+3. Go to sshd_config: changed `AllowTcpForwarding`, added `protocol 2`, but keep default root login policy (cause I think non-pwd-login for a root is still ok)
+4. Created `authorized_keys` and added my key
+5. Works
+
+![ssh example](alex/images/ssh-via-key.png)
+
 ![Meme](alex/images/cat.jpg)
