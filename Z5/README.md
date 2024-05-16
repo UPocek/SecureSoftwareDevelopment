@@ -219,7 +219,63 @@ root@9509f6362468:/tmp# ls -al /etc/shadow
 Enough secure.
 
 </li>
+
+<li>
+
+Kinda ok. Docker and ubuntu stuf.
+
+```
+root@9509f6362468:/tmp# find / -perm -4000 -ls
+
+  3014913     36 -rwsr-xr--   1 root     messagebus    34960 Apr  8 16:38 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+  2886665    336 -rwsr-xr-x   1 root     root         342632 Apr  5 21:30 /usr/lib/openssh/ssh-keysign
+  1708708     64 -rwsr-xr-x   1 root     root          64152 Apr  9 09:01 /usr/bin/passwd
+  1708800     40 -rwsr-xr-x   1 root     root          39296 Apr  9 16:02 /usr/bin/umount
+  1708774     56 -rwsr-xr-x   1 root     root          55680 Apr  9 16:02 /usr/bin/su
+  1708697     40 -rwsr-xr-x   1 root     root          40664 Apr  9 09:01 /usr/bin/newgrp
+  1708633     76 -rwsr-xr-x   1 root     root          76248 Apr  9 09:01 /usr/bin/gpasswd
+  1708566     72 -rwsr-xr-x   1 root     root          72792 Apr  9 09:01 /usr/bin/chfn
+  1708572     44 -rwsr-xr-x   1 root     root          44760 Apr  9 09:01 /usr/bin/chsh
+  1708692     52 -rwsr-xr-x   1 root     root          51584 Apr  9 16:02 /usr/bin/mount
+```
+</li>
+
 </ol>
+
+### Users' review
+
+1. `cat /etc/passwd`: all ids are not 0, except for a root. Ok.
+
+<li>
+
+```
+root@9509f6362468:/tmp# cat  /etc/shadow
+root:$y$j9T$AoYtKnzDmoGgsGr3ZabP1/$7PsDNKNajgry8gcyAIAf.FaK.WF7S8YzUs6e3vbKhr0:19858:0:99999:7:::
+```
+
+As we see, it starts with `$y$`, what means `yescrypt` algorithm (a slightly more crack resistant version of `SHA-512`)
+
+</li>
+
+<li>
+
+Let's try to crack it!
+
+```shell
+apt-get install john -y
+john --wordlist=rockyou.txt hash.txt --format=crypt
+```
+
+```
+root@9509f6362468:/tmp# john --show hash.txt
+?:starcraftrules
+
+1 password hash cracked, 0 left
+```
+
+Not reliable, so
+
+</li>
 
 
 ![Meme](alex/images/cat.jpg)
