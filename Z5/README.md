@@ -1,10 +1,149 @@
 # Z4
 
 ## Uros
+Set up
+Created an AWS EC2 Instance using Debian 11 (Bullseye) AMI, SSD Volume Type on t2.micro with 1CPU core and 1GB RAM.
+Set up SSH connection with .pem key, DNS of the virtual machine is ec2-3-120-45-67.eu-central-1.compute.amazonaws.com.
+To connect, use this command:
+sh
+Copy code
+ssh -i "debian_key.pem" admin@ec2-3-120-45-67.eu-central-1.compute.amazonaws.com
+Upon successful connection, you will see a welcome message similar to the one below:
 
+plaintext
+Copy code
+Welcome to Debian GNU/Linux 11 (bullseye)!
+
+ * Documentation:  https://www.debian.org/doc/
+ * Support:        https://www.debian.org/support
+
+System information as of Sun May 19 21:21:54 UTC 2024
+
+  System load:  0.0               Processes:             100
+  Usage of /:   25.4% of 8.00GB   Users logged in:       1
+  Memory usage: 18%               IPv4 address for eth0: 172.31.24.56
+  Swap usage:   0%
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+Security
+Set up the firewall with ufw to allow SSH and HTTP/HTTPS connections to the server:
+sh
+Copy code
+sudo ufw allow OpenSSH
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw enable
+sudo ufw status
+Analytics
+Perform standard analytics to check server version, uptime, timezone, etc.:
+
+sh
+Copy code
+lsb_release -a
+uptime
+timedatectl
+View all installed packages:
+
+sh
+Copy code
+dpkg -l | less
+Secure access to all sensitive files by setting appropriate permissions:
+
+sh
+Copy code
+sudo chmod -R go-rwx /path/to/sensitive/files
+Passwords
+For password hashing, ensure yescrypt is set up, which is a strong and modern algorithm for systems in 2024. To verify or set up yescrypt, you might need to modify the PAM (Pluggable Authentication Modules) configuration:
+
+sh
+Copy code
+sudo nano /etc/pam.d/common-password
+Ensure the line includes yescrypt:
+
+plaintext
+Copy code
+password [success=1 default=ignore] pam_unix.so obscure use_authtok try_first_pass yescrypt
+List running processes:
+
+sh
+Copy code
+ps -edf
+Extra info
+Check all default cron jobs for the user:
+sh
+Copy code
+crontab -u <user> -l
 
 
 ## Tamara
+### Set up
+- Created AWS EC2 Instance, Ubuntu Server 24.04 LTS (HVM), SSD Volume Type on t2.micro with 1CPU core and 1GB RAM
+![aws1](./uros/aws_1.png)
+- Then I setuped shh connection with .pem key, DNS of my virtual machine is ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
+- To connect I use this command ssh -i "rbs_up.pem" ubuntu@ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
+```
+Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-1008-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sun May 19 21:21:54 UTC 2024
+
+  System load:  0.0               Processes:             105
+  Usage of /:   23.1% of 6.71GB   Users logged in:       0
+  Memory usage: 19%               IPv4 address for enX0: 172.31.22.113
+  Swap usage:   0%
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+```
+
+### Security
+- Then I setuped firewall with `ufw` to allow ssh and http/https connections to my server
+![aws_2](./uros/aws_2.png)
+
+### Analytics
+- Now I performed standard analytics, checking server version, uptime, timezone etc.
+- See all packages installed with `dpkg -l | less`
+- After that I secured access to all sensitive files
+
+### Passwords
+- On server for password hasing `yescrypt` has been setup which is strong and modern algorithm for systems in 2024.
+- Running command `ps -edf` showed me list of running processes on the server
+
+### Extra info
+- Checked all defualt cron jobs with `crontab -u <user> -l`
+![aws_3](./uros/aws_3.png)
 
 
 
