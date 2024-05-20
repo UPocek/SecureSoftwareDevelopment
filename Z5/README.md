@@ -1,17 +1,13 @@
 # Z4
 
 ## Uros
-Set up
-Created an AWS EC2 Instance using Debian 11 (Bullseye) AMI, SSD Volume Type on t2.micro with 1CPU core and 1GB RAM.
-Set up SSH connection with .pem key, DNS of the virtual machine is ec2-3-120-45-67.eu-central-1.compute.amazonaws.com.
-To connect, use this command:
-sh
-Copy code
-ssh -i "debian_key.pem" admin@ec2-3-120-45-67.eu-central-1.compute.amazonaws.com
-Upon successful connection, you will see a welcome message similar to the one below:
-
-plaintext
-Copy code
+### Set up
+- Created an AWS EC2 Instance using Debian 11 (Bullseye) AMI, SSD Volume Type on t2.micro with 1CPU core and 1GB RAM.
+- Set up SSH connection with .pem key, DNS of the virtual machine is ec2-3-120-45-67.eu-central-1.compute.amazonaws.com.
+- To connect, use this command:
+`ssh -i "debian_key.pem" admin@ec2-3-120-45-67.eu-central-1.compute.amazonaws.com`
+- Upon successful connection, you will see a welcome message similar to the one below:
+```
 Welcome to Debian GNU/Linux 11 (bullseye)!
 
  * Documentation:  https://www.debian.org/doc/
@@ -32,52 +28,39 @@ Debian comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
 applicable law.
 Security
 Set up the firewall with ufw to allow SSH and HTTP/HTTPS connections to the server:
-sh
-Copy code
-sudo ufw allow OpenSSH
-sudo ufw allow http
-sudo ufw allow https
-sudo ufw enable
-sudo ufw status
-Analytics
+```
+
+`sudo ufw allow OpenSSH`
+`sudo ufw allow http`
+`sudo ufw allow https`
+`sudo ufw enable`
+`sudo ufw status`
+
+### Analytics
 Perform standard analytics to check server version, uptime, timezone, etc.:
+`lsb_release -a`
+`uptime`
+`timedatectl`
 
-sh
-Copy code
-lsb_release -a
-uptime
-timedatectl
-View all installed packages:
+- View all installed packages:
+`dpkg -l | less`
 
-sh
-Copy code
-dpkg -l | less
-Secure access to all sensitive files by setting appropriate permissions:
+- Secure access to all sensitive files by setting appropriate permissions:
+`sudo chmod -R go-rwx /path/to/sensitive/files`
 
-sh
-Copy code
-sudo chmod -R go-rwx /path/to/sensitive/files
-Passwords
-For password hashing, ensure yescrypt is set up, which is a strong and modern algorithm for systems in 2024. To verify or set up yescrypt, you might need to modify the PAM (Pluggable Authentication Modules) configuration:
+### Passwords
+- For password hashing, ensure yescrypt is set up, which is a strong and modern algorithm for systems in 2024. To verify or set up yescrypt, you might need to modify the PAM (Pluggable Authentication Modules) configuration:
+`sudo nano /etc/pam.d/common-password`
 
-sh
-Copy code
-sudo nano /etc/pam.d/common-password
-Ensure the line includes yescrypt:
+- Ensure the line includes yescrypt:
+`password [success=1 default=ignore] pam_unix.so obscure use_authtok try_first_pass yescrypt`
 
-plaintext
-Copy code
-password [success=1 default=ignore] pam_unix.so obscure use_authtok try_first_pass yescrypt
-List running processes:
+- List running processes:
+`ps -edf`
 
-sh
-Copy code
-ps -edf
-Extra info
+### Extra info
 Check all default cron jobs for the user:
-sh
-Copy code
-crontab -u <user> -l
+`crontab -u <user> -l`
 
 
 ## Tamara
