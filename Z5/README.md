@@ -68,7 +68,7 @@ Check all default cron jobs for the user:
 ### Set up
 - Created AWS EC2 Instance, Ubuntu Server 24.04 LTS (HVM), SSD Volume Type on t2.micro with 1CPU core and 1GB RAM
 ![aws1](./tamara/aws_1.png)
-- Then I setuped shh connection with .pem key, DNS of my virtual machine is ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
+- Then I setuped ssh connection with .pem key, DNS of my virtual machine is ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
 - To connect I use this command ssh -i "rbs_up.pem" ubuntu@ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
 ```
 Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-1008-aws x86_64)
