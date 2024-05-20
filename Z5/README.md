@@ -2,6 +2,7 @@
 
 ## Uros
 ### Set up
+![uros1](./uros/uros1.png)
 - Created an AWS EC2 Instance using Debian 11 (Bullseye) AMI, SSD Volume Type on t2.micro with 1CPU core and 1GB RAM.
 - Set up SSH connection with .pem key, DNS of the virtual machine is ec2-3-120-45-67.eu-central-1.compute.amazonaws.com.
 - To connect, use this command:
@@ -66,7 +67,7 @@ Check all default cron jobs for the user:
 ## Tamara
 ### Set up
 - Created AWS EC2 Instance, Ubuntu Server 24.04 LTS (HVM), SSD Volume Type on t2.micro with 1CPU core and 1GB RAM
-![aws1](./uros/aws_1.png)
+![aws1](./tamara/aws_1.png)
 - Then I setuped shh connection with .pem key, DNS of my virtual machine is ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
 - To connect I use this command ssh -i "rbs_up.pem" ubuntu@ec2-35-159-25-183.eu-central-1.compute.amazonaws.com
 ```
@@ -114,7 +115,7 @@ See "man sudo_root" for details.
 
 ### Security
 - Then I setuped firewall with `ufw` to allow ssh and http/https connections to my server
-![aws_2](./uros/aws_2.png)
+![aws_2](./tamara/aws_2.png)
 
 ### Analytics
 - Now I performed standard analytics, checking server version, uptime, timezone etc.
@@ -127,9 +128,7 @@ See "man sudo_root" for details.
 
 ### Extra info
 - Checked all defualt cron jobs with `crontab -u <user> -l`
-![aws_3](./uros/aws_3.png)
-
-
+![aws_3](./tamara/aws_3.png)
 
 ## Alex
 
