@@ -110,6 +110,7 @@ applicable law.
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
 ```
+- After that I installed Python and pip on my Ubuntu server and run FastAPI backend
 
 ### Security
 - Then I setuped firewall with `ufw` to allow ssh and http/https connections to my server
