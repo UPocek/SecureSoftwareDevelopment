@@ -1,3 +1,5 @@
+# Z6
+
 ## Uros
 ### Task 4
 - First I read the message and saw that some parts were repeating and didn't make sense, this led me to believe that this was encoded text
@@ -7,7 +9,7 @@
 
 ### Task 5
 - I opened forgotten_passwords and started looking for answers
-- First answer about FTN I found at http://www.ftn.uns.ac.rs/n1613077170/o-ftn-u that FTN was opened on <strong>18/05/1960</dtrong> which gave me correct hash
+- First answer about FTN I found at http://www.ftn.uns.ac.rs/n1613077170/o-ftn-u that FTN was opened on <strong>18/05/1960</strong> which gave me correct hash
 The second answer I found after a little bit of research on the FTN website. This information is not available on Wikipedia, but I found that the dean at that time was <strong>Dragutin</strong> Zelenović here http://www.ftn.uns.ac.rs/n508315396/istorijat-funkcije-dekan
 The third answer I found searching through the archive of FTN website posts. Here http://www.ftn.uns.ac.rs/1426608662/arhiva-vesti I found that announcement about website was made on <strong>18/05/2005</strong>
 The fourth answer I found on http://www.ftn.uns.ac.rs/n1613077170/o-ftn-u where every program's start date is mentioned, answer is <strong>1999</strong>
@@ -30,3 +32,45 @@ The fourth answer I found on http://www.ftn.uns.ac.rs/n1613077170/o-ftn-u where 
  - RC15{Apr 11, 2021, 3:03:07 PM}
 
 ## Alex
+
+### Task 8
+
+```
+NAVY{h4v3_y0u_3v3r_w4tched_!t?}
+```
+
+1. We have an image, so firstly trying to analyze it with steganography tools (https://www.aperisolve.com/16bce86599aa0610a443dcbffae319b8):
+   However, neither hidden image or text (Zsteg for text was used) was found:
+   ![Steg1](images/img.png)
+   ![Steg3](images/img_1.png)
+2. But we still have an email on the photo - let's google it
+3. There is such a user on the GitHub
+4. He has only one repo. Searching for word `NAVY` in it
+5. Key: https://github.com/search?q=repo%3Asquidgameph1337%2Fsquidgame%20NAVY&type=code
+
+### Task 9
+
+```
+UNS{45.1194813,19.2600817}
+```
+
+1. Sava Šumanović was leaving in Šid. I was to the museum there!
+2. There is only a couple of street in the city. But let's search by shop name
+3. ![img.png](images/img_2.png)
+4. ![img.png](images/img11.png)
+
+### Task 10
+
+That's a tough one.
+
+1. The coast seems to be more likely to be of an artificial water reservoir rather than a sea.
+2. https://picarta.ai/ tells it's 
+   ``` 
+   1. Orgelet, France. GPS location around: 46.5•••••,5.5••••• Confidence: 37.74%
+   ```
+   But mountains in France are lower and roads are more advanced there.
+3. Google Lence told it is Tara
+4. Look over Montenegro / Serbian west on the Google Earth
+5. Not Tara, but some lake near
+   ![img_1.png](images/img_11.png)
+6. Still can not find exactly that panorama view
