@@ -1,0 +1,17 @@
+# Use the official Node.js image
+FROM node:18.17
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the Next.js application into the container
+COPY ./my-app /app
+
+# Install dependencies
+RUN npm install
+
+# Expose port 7255 for the Next.js app
+EXPOSE 7255
+
+# Command to run the Next.js development server
+CMD ["npm", "run", "dev", "--", "-p", "7255"]

@@ -1,0 +1,20 @@
+# Use the official Python 3.9 image
+FROM python:3.9-slim
+
+# Set the working directory to /server
+WORKDIR /server
+
+# Install Flask and flask-cors
+RUN pip install Flask flask-cors
+
+# Copy app.py into the container at /server
+COPY ./app.py /server/app.py
+
+# Create the required directories
+RUN mkdir -p /server/archive /server/secret
+
+# Expose port 5000 for the Flask app
+EXPOSE 5000
+
+# Command to run the Flask app
+CMD ["flask", "--app", "app", "run", "--host", "0.0.0.0"]
